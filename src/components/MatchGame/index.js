@@ -3,6 +3,7 @@ import './index.css'
 
 import TabItem from '../TabItem'
 import ImageItem from '../ImageItem'
+import ScoreCard from '../ScoreCard'
 
 class MatchGame extends Component {
   state = {
@@ -38,7 +39,7 @@ class MatchGame extends Component {
       imageDetails => imageDetails.id === activeImageId,
     )
     if (activeImageUrl === undefined) {
-      return 'https://assets.ccbp.in/frontend/react-js/match-game/orange-img.png'
+      return imagesList[0].imageUrl
     }
     return activeImageUrl.imageUrl
   }
@@ -52,7 +53,44 @@ class MatchGame extends Component {
         score: prev.score + 1,
         activeImageId: random.id,
       }))
+    } else {
+      this.setState({countDown: 0})
     }
+  }
+
+  resetGame = () => {
+    this.setState({score: 0, countDown: 60})
+  }
+
+  renderMatchGame = () => {
+    const {activeTabId} = this.state
+    const {tabsList} = this.props
+    const activeImageUrl = this.getActiveImage()
+    const filteredImagesList = this.getFilteredImagesList()
+    return (
+      <>
+        <img src={activeImageUrl} alt="match" className="random-img" />
+        <ul className="tabsList-container">
+          {tabsList.map(eachTab => (
+            <TabItem
+              tabDetails={eachTab}
+              key={eachTab.tabId}
+              updateActiveTab={this.updateActiveTab}
+              isActive={eachTab.tabId === activeTabId}
+            />
+          ))}
+        </ul>
+        <ul className="imageList-container">
+          {filteredImagesList.map(imageDetails => (
+            <ImageItem
+              imageDetails={imageDetails}
+              key={imageDetails.id}
+              calculateScore={this.calculateScore}
+            />
+          ))}
+        </ul>
+      </>
+    )
   }
 
   updateCountDown = () => {
@@ -64,10 +102,14 @@ class MatchGame extends Component {
   }
 
   render() {
-    const {score, countDown, activeTabId} = this.state
-    const {tabsList} = this.props
-    const activeImageUrl = this.getActiveImage()
-    const filteredImagesList = this.getFilteredImagesList()
+    const {score, countDown} = this.state
+    const renderAuth = () => {
+      if (countDown === 0) {
+        clearInterval(this.intervalId)
+        return <ScoreCard score={score} resetGame={this.resetGame} />
+      }
+      return this.renderMatchGame()
+    }
     return (
       <div className="app-container">
         <div className="content-navbar">
@@ -90,28 +132,7 @@ class MatchGame extends Component {
             </div>
           </div>
         </div>
-        <div className="game-card">
-          <img src={activeImageUrl} alt="match" className="random-img" />
-          <ul className="tabsList-container">
-            {tabsList.map(eachTab => (
-              <TabItem
-                tabDetails={eachTab}
-                key={eachTab.tabId}
-                updateActiveTab={this.updateActiveTab}
-                isActive={eachTab.tabId === activeTabId}
-              />
-            ))}
-          </ul>
-          <ul className="imageList-container">
-            {filteredImagesList.map(imageDetails => (
-              <ImageItem
-                imageDetails={imageDetails}
-                key={imageDetails.id}
-                calculateScore={this.calculateScore}
-              />
-            ))}
-          </ul>
-        </div>
+        <div className="game-card">{renderAuth()}</div>
       </div>
     )
   }

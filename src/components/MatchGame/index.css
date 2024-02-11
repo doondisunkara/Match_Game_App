@@ -57,7 +57,20 @@
   min-height: 100vh;
 }
 
+.random-img {
+  width: 900px;
+}
+
 .tabsList-container {
   display: flex;
   list-style-type: none;
+}
+
+.imageList-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style-type: none;
+  width: 80%;
 }

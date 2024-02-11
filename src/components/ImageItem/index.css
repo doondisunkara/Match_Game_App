@@ -1,0 +1,18 @@
+.image-item {
+  margin: 10px;
+}
+
+.img-btn {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  background-color: transparent;
+}
+
+.match-img {
+  width: 250px;
+  height: 250px;
+}

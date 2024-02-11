@@ -9,11 +9,16 @@ class MatchGame extends Component {
     score: 0,
     countDown: 60,
     activeTabId: '',
+    activeImageId: '',
   }
 
   componentDidMount() {
-    const {tabsList} = this.props
-    this.setState({activeTabId: tabsList[0].tabId})
+    const {tabsList, imagesList} = this.props
+    const random = imagesList[Math.floor(Math.random() * imagesList.length)]
+    this.setState({
+      activeTabId: tabsList[0].tabId,
+      activeImageId: random.id,
+    })
     this.intervalId = setInterval(this.updateCountDown, 1000)
   }
 
@@ -24,6 +29,30 @@ class MatchGame extends Component {
       imageDetails => imageDetails.category === activeTabId,
     )
     return filteredList
+  }
+
+  getActiveImage = () => {
+    const {activeImageId} = this.state
+    const {imagesList} = this.props
+    const activeImageUrl = imagesList.find(
+      imageDetails => imageDetails.id === activeImageId,
+    )
+    if (activeImageUrl === undefined) {
+      return 'https://assets.ccbp.in/frontend/react-js/match-game/orange-img.png'
+    }
+    return activeImageUrl.imageUrl
+  }
+
+  calculateScore = thumbnailId => {
+    const {activeImageId} = this.state
+    const {imagesList} = this.props
+    if (thumbnailId === activeImageId) {
+      const random = imagesList[Math.floor(Math.random() * imagesList.length)]
+      this.setState(prev => ({
+        score: prev.score + 1,
+        activeImageId: random.id,
+      }))
+    }
   }
 
   updateCountDown = () => {
@@ -37,7 +66,8 @@ class MatchGame extends Component {
   render() {
     const {score, countDown, activeTabId} = this.state
     const {tabsList} = this.props
-    const filteredImagesList = this.getFilteredImagesList
+    const activeImageUrl = this.getActiveImage()
+    const filteredImagesList = this.getFilteredImagesList()
     return (
       <div className="app-container">
         <div className="content-navbar">
@@ -61,10 +91,7 @@ class MatchGame extends Component {
           </div>
         </div>
         <div className="game-card">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/match-game/orange-img.png"
-            alt="fruit"
-          />
+          <img src={activeImageUrl} alt="match" className="random-img" />
           <ul className="tabsList-container">
             {tabsList.map(eachTab => (
               <TabItem
@@ -75,11 +102,12 @@ class MatchGame extends Component {
               />
             ))}
           </ul>
-          <ul>
+          <ul className="imageList-container">
             {filteredImagesList.map(imageDetails => (
               <ImageItem
                 imageDetails={imageDetails}
-                key={imageDetails.category}
+                key={imageDetails.id}
+                calculateScore={this.calculateScore}
               />
             ))}
           </ul>

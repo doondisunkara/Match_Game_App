@@ -1,6 +1,6 @@
 .app-container {
   display: flex;
-  flex-direction: cloumn;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -9,4 +9,55 @@
   justify-content: space-between;
   align-items: center;
   background-color: #2c0e3a;
+  padding: 20px 40px 20px 40px;
+}
+
+.navbar-details-container {
+  display: flex;
+  align-items: center;
+}
+
+.countdown-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+}
+
+.countdown-value {
+  color: #fec653;
+  font-family: 'Roboto';
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.timer-icon {
+  width: 30px;
+  height: 30px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.countdown-heading {
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 20px;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-bg.png');
+  min-height: 100vh;
+}
+
+.tabsList-container {
+  display: flex;
+  list-style-type: none;
 }

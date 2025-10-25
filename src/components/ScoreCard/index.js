@@ -14,7 +14,7 @@ class ScoreCard extends Component {
           alt="trophy"
           className="trophy-img"
         />
-        <h1 className="score-heading">YOUR SCORE</h1>
+        <p className="score-heading">YOUR SCORE</p>
         <p className="final-score">{score}</p>
         <button type="button" className="reset-btn" onClick={onClickReset}>
           <img

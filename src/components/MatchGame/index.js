@@ -15,10 +15,9 @@ class MatchGame extends Component {
 
   componentDidMount() {
     const {tabsList, imagesList} = this.props
-    const random = imagesList[Math.floor(Math.random() * imagesList.length)]
     this.setState({
       activeTabId: tabsList[0].tabId,
-      activeImageId: random.id,
+      activeImageId: imagesList[0].id,
     })
     this.intervalId = setInterval(this.updateCountDown, 1000)
   }
@@ -103,7 +102,7 @@ class MatchGame extends Component {
 
   render() {
     const {score, countDown} = this.state
-    const renderAuth = () => {
+    const renderGame = () => {
       if (countDown === 0) {
         clearInterval(this.intervalId)
         return <ScoreCard score={score} resetGame={this.resetGame} />
@@ -118,21 +117,23 @@ class MatchGame extends Component {
             alt="website logo"
             className="logo"
           />
-          <div className="navbar-details-container">
-            <p className="countdown-heading">
-              Score: <span className="countdown-value">{score}</span>
-            </p>
-            <div className="countdown-container">
+          <ul className="navbar-details-container">
+            <li className="countdown-heading">
+              <p>
+                Score: <span className="countdown-value">{score}</span>
+              </p>
+            </li>
+            <li className="countdown-container">
               <img
                 src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
                 alt="timer"
                 className="timer-icon"
               />
               <p className="countdown-value">{`${countDown} sec`}</p>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
-        <div className="game-card">{renderAuth()}</div>
+        <div className="game-card">{renderGame()}</div>
       </div>
     )
   }
